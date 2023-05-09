@@ -30,6 +30,23 @@ if [ -f "$FILE_PATH" ]; then
   exit 1
 fi
 
+ENABLED_PATH="data/nginx/conf.d/sites-enabled"
+AVAILABLE_PATH="data/nginx/conf.d/sites-available"
+
+if [ -d "$ENABLED_PATH" ]; then
+    echo "Error: ${ENABLED_PATH} already exists! Skipping.."
+else
+    echo "Info: Creating ${ENABLED_PATH} for enabled hosts."
+    mkdir -p "$ENABLED_PATH"
+fi
+
+if [ -d "$AVAILABLE_PATH" ]; then
+    echo "Error: ${AVAILABLE_PATH} already exists! Skipping.."
+else
+    echo "Info: Creating ${AVAILABLE_PATH} for available hosts."
+    mkdir -p "$AVAILABLE_PATH"
+fi
+
 if [ -d "$DOMAIN_PATH" ]; then
     echo "Error: ${DOMAIN_PATH} already exists! Skipping.."
 else
@@ -218,6 +235,18 @@ echo
 
 echo "### Reloading nginx ..."
 docker-compose exec nginx nginx -s reload
+
+elif [ "$1" == "purge" ]; then
+
+read -p "### Continue and delete existing files? (y/N) " decision
+if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
+  exit
+fi
+
+rm "data/www" -rf
+rm "data/nginx/conf.d/sites-available" -rf
+rm "data/nginx/conf.d/sites-enabled" -rf
+rm "data/nginx/logs/*" -rf
 
 else
     # If the first argument is not recognized, print an error message
