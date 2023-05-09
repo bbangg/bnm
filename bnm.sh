@@ -159,7 +159,7 @@ if [ $# -lt 3 ]; then
     exit 1
 fi
 
-domains=(${@:3})
+domains=(${@:4})
 rsa_key_size=4096
 data_path="./data/certbot"
 email="$2"
