@@ -126,8 +126,7 @@ DOMAIN="$2"
 FILE_NAME="${DOMAIN}.conf"
 FILE_PATH="data/nginx/conf.d/sites-available/${FILE_NAME}"
 
-ln -s "${FILE_PATH}" "data/nginx/conf.d/sites-enabled/${FILE_NAME}"
-
+docker-compose exec nginx ln -s "/etc/nginx/conf.d/sites-available/${FILE_NAME}" "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
 echo "### ${DOMAIN} has been enabled."
 
 echo "### Reloading nginx ..."
@@ -144,10 +143,8 @@ fi
 
 DOMAIN="$2"
 FILE_NAME="${DOMAIN}.conf"
-FILE_PATH="data/nginx/conf.d/sites-available/${FILE_NAME}"
 
-ln -s "${FILE_PATH}" "data/nginx/conf.d/sites-enabled/${FILE_NAME}"
-
+docker-compose exec nginx rm "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
 echo "### ${DOMAIN} has been disabled."
 
 echo "### Reloading nginx ..."
