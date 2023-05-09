@@ -1,6 +1,6 @@
 ## bnm (basic nginx manager)
 
-BNM is built to run an NGINX container (with certbot), making it easy to deploy and manage across multiple domains. 
+BNM is built to run a NGINX container (with certbot), making it easy to deploy and manage across multiple domains. 
 
 This will not work properly with multiple servers (at least not unless optimized, giving no opportunity for scalability).
 BNW can be improved but is not needed at the moment. You can try other projects or work with k8s.
