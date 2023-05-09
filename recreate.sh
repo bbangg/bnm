@@ -1,0 +1,1 @@
+sudo docker-compose up -d --force-recreate --no-deps --remove-orphans nginx
