@@ -104,8 +104,8 @@ server {
         proxy_set_header    X-Forwarded-For     \$proxy_add_x_forwarded_for;
     }
 
-    root /var/www/${DOMAIN}
-    index index.html index.php
+    root /var/www/${DOMAIN};
+    index index.html index.php;
 }
 EOF
 
