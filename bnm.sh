@@ -22,7 +22,6 @@ fi
 DOMAIN="$2"
 FILE_NAME="${DOMAIN}.conf"
 FILE_PATH="data/nginx/conf.d/sites-available/${FILE_NAME}"
-DOMAIN_PATH="data/www/${DOMAIN}"
 
 # Check if file already exists
 if [ -f "$FILE_PATH" ]; then
@@ -32,6 +31,8 @@ fi
 
 ENABLED_PATH="data/nginx/conf.d/sites-enabled"
 AVAILABLE_PATH="data/nginx/conf.d/sites-available"
+LOGS_PATH="data/nginx/logs/${DOMAIN}"
+DOMAIN_PATH="data/www/vhosts/${DOMAIN}"
 
 if [ -d "$ENABLED_PATH" ]; then
     echo "Error: ${ENABLED_PATH} already exists! Skipping.."
@@ -45,6 +46,13 @@ if [ -d "$AVAILABLE_PATH" ]; then
 else
     echo "Info: Creating ${AVAILABLE_PATH} for available hosts."
     mkdir -p "$AVAILABLE_PATH"
+fi
+
+if [ -d "$LOGS_PATH" ]; then
+    echo "Error: ${LOGS_PATH} already exists! Skipping.."
+else
+    echo "Info: Creating ${LOGS_PATH} for logs."
+    mkdir -p "$LOGS_PATH"
 fi
 
 if [ -d "$DOMAIN_PATH" ]; then
@@ -104,7 +112,7 @@ server {
         proxy_set_header    X-Forwarded-For     \$proxy_add_x_forwarded_for;
     }
 
-    root /var/www/${DOMAIN};
+    root /var/www/vhosts/${DOMAIN};
     index index.html index.php;
 }
 EOF
