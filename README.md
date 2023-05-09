@@ -29,5 +29,5 @@ chmod +x ./bnm.sh && chmod +x ./recreate.sh
 
 ### todo
 
-[ ] grafana + prometheus for monitoring
-[ ] cloudflare integration
+- [ ] grafana + prometheus for monitoring
+- [ ] cloudflare integration
