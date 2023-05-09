@@ -9,7 +9,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./data/nginx:/etc/nginx
+      - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./data/nginx/conf.d:/etc/nginx/conf.d
       - ./data/nginx/logs:/var/logs/nginx
       - ./data/www:/var/www
       - ./data/certbot/conf:/etc/letsencrypt
