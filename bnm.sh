@@ -244,6 +244,7 @@ if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
 fi
 
 rm "data/www" -rf
+rm "data/certbot" -rf
 rm "data/nginx/conf.d/sites-available" -rf
 rm "data/nginx/conf.d/sites-enabled" -rf
 rm "data/nginx/logs/*" -rf
