@@ -252,7 +252,7 @@ rm "data/www" -rf
 rm "data/certbot" -rf
 rm "data/nginx/conf.d/sites-available" -rf
 rm "data/nginx/conf.d/sites-enabled" -rf
-rm "data/nginx/logs/*" -rf
+rm "data/nginx/logs" -rf
 
 else
     # If the first argument is not recognized, print an error message
