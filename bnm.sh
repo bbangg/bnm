@@ -6,7 +6,12 @@ if ! [ -x "$(command -v docker-compose)" ]; then
 fi
 
 if [ $# -lt 1 ]; then
-    echo "Error: no command name provided!"
+    echo "Error: no command name provided!\n"
+    echo "Example Usage: "
+    echo "./bnm.sh create <domain>"
+    echo "./bnm.sh enable <domain>"
+    echo "./bnm.sh disable <domain>"
+    echo "./bnm.sh ssl <mail> <staging> <domains>"
     exit 1
 fi
 
@@ -14,8 +19,8 @@ if [ "$1" == "create" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bws.sh create <domain>"
-    echo "Example: ./bws.sh create example.org"
+    echo "Syntax:  ./bnm.sh create <domain>"
+    echo "Example: ./bnm.sh create example.org"
     exit 1
 fi
 
@@ -125,8 +130,8 @@ elif [ "$1" == "enable" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bws.sh enable <domain>"
-    echo "Example: ./bws.sh enable example.org"
+    echo "Syntax:  ./bnm.sh enable <domain>"
+    echo "Example: ./bnm.sh enable example.org"
     exit 1
 fi
 
@@ -144,8 +149,8 @@ elif [ "$1" == "disable" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bws.sh disable <domain>"
-    echo "Example: ./bws.sh disable example.org"
+    echo "Syntax:  ./bnm.sh disable <domain>"
+    echo "Example: ./bnm.sh disable example.org"
     exit 1
 fi
 
@@ -162,14 +167,18 @@ elif [ "$1" == "ssl" ]; then
 
 if [ $# -lt 3 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bws.sh ssl <mail> <staging> <domains>"
-    echo "Example: ./bws.sh ssl example@mail.com 0 example.org www.example.org"
+    echo "Syntax:  ./bnm.sh ssl <mail> <staging> <domains>"
+    echo "Example: ./bnm.sh ssl example@mail.com 0 example.org www.example.org"
     exit 1
 fi
 
 domains=(${@:4})
 rsa_key_size=4096
 data_path="./data/certbot"
+
+# prepare folders
+mkdir -p "$data_path/conf/live/$domains"
+
 email="$2"
 staging="$3" # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -191,7 +200,7 @@ fi
 
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
+
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
