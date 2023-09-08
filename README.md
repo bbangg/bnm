@@ -57,4 +57,4 @@ Purge everything
 
 - [ ] logs directory
 - [ ] grafana + prometheus for monitoring
-- [x] allow cloudflare from cloudflare only (check `cloudflare.conf`)
+- [x] allow traffic from cloudflare only (check `cloudflare.conf`)
