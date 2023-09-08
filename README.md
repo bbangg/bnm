@@ -55,6 +55,6 @@ Purge everything
 
 ### todo
 
-- [ ] logs directory
 - [ ] grafana + prometheus for monitoring
+- [x] logs directory
 - [x] allow traffic from cloudflare only (check `cloudflare.conf`)
