@@ -1,9 +1,11 @@
 ## bnm (basic nginx manager)
 
-BNM is built to run a NGINX container (with certbot), making it easy to deploy and manage across multiple domains. 
+BNM simplifies deployment and management across multiple domains.
 
-This will not work properly with multiple servers (at least not unless optimized, giving no opportunity for scalability).
-BNW can be improved but is not needed at the moment. You can try other projects or work with k8s.
+### requirements
+
+- docker
+- docker-compose
 
 ### installation
 
@@ -20,14 +22,39 @@ chmod +x ./bnm.sh && chmod +x ./recreate.sh
 
 ### commands
 
+Create new domain:
 ```bash
 ./bnm.sh create <domain>
+```
+
+Enable domain (creates symlink to `sites-enabled`)
+```bash
 ./bnm.sh enable <domain>
+```
+
+Disable domain (deletes symlink from `sites-enabled`)
+```bash
 ./bnm.sh disable <domain>
+```
+
+Generates SSL for domain
+> Set staging to 1 if you're testing your setup to avoid hitting request limits
+```bash
 ./bnm.sh ssl <mail> <staging> <domains>
+```
+
+Reload nginx service
+```bash
+./bnm.sh reload
+```
+
+Purge everything
+```bash
+./bnm.sh purge
 ```
 
 ### todo
 
+- [ ] logs directory
 - [ ] grafana + prometheus for monitoring
-- [ ] cloudflare integration
+- [x] allow cloudflare from cloudflare only (check `cloudflare.conf`)
