@@ -264,6 +264,11 @@ rm "data/nginx/conf.d/sites-available" -rf
 rm "data/nginx/conf.d/sites-enabled" -rf
 rm "data/nginx/logs" -rf
 
+elif [ "$1" == "reload" ]; then
+
+echo "### Reloading nginx ..."
+docker-compose exec nginx nginx -s reload
+
 else
     # If the first argument is not recognized, print an error message
     echo "Error: unrecognized command '$1'"
