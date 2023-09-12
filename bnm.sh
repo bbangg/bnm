@@ -5,8 +5,15 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
+NETWORK_NAME="bnm_network"
+if ! docker network inspect "$NETWORK_NAME" &>/dev/null; then
+    echo "Network '$NETWORK_NAME' does not exist."
+    echo "Create network: docker network create $NETWORK_NAME"
+    exit 1	
+fi
+
 if [ $# -lt 1 ]; then
-    echo "Error: no command name provided!\n"
+    echo "Error: no command name provided!"
     echo "Example Usage: "
     echo "./bnm.sh create <domain>"
     echo "./bnm.sh enable <domain>"

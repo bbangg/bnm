@@ -55,7 +55,22 @@ Purge everything
 
 ### configuration
 
-- Handle incoming requests on running containers?
+- Use same network with other containers
+
+```yml
+services:
+  example_service:
+    ...
+    networks:
+    - bnm_network
+
+networks:
+  bnm_network:
+    external: true
+    driver: bridge
+```
+
+- Handle incoming requests on running containers
 
 ```
 location @{label_here} {
@@ -72,7 +87,7 @@ location / {
 }
 ```
 
-- Allow Traffic from cloudflare only
+- Allow traffic from cloudflare only
 
 ```
 include /etc/nginx/conf.d/cloudflare.conf;
