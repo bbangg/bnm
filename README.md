@@ -1,6 +1,6 @@
-## bnm (basic nginx manager)
+## nginx-manager
 
-BNM simplifies deployment and management across multiple domains.
+Simplifies deployment and management across multiple domains.
 
 ### requirements
 
@@ -14,43 +14,43 @@ sudo apt update
 sudo apt upgrade
 sudo apt install docker docker-compose -y
 
-git clone https://github.com/bbangg/bnm.git
-cd bnm
+git clone https://github.com/bbangg/nginx-manager.git
+cd nginx-manager
 
-chmod +x ./bnm.sh && chmod +x ./recreate.sh
+chmod +x ./nginx-manager.sh && chmod +x ./recreate.sh
 ```
 
 ### commands
 
 Create new domain:
 ```bash
-./bnm.sh create <domain>
+./nginx-manager.sh create <domain>
 ```
 
 Enable domain (creates symlink to `sites-enabled`)
 ```bash
-./bnm.sh enable <domain>
+./nginx-manager.sh enable <domain>
 ```
 
 Disable domain (deletes symlink from `sites-enabled`)
 ```bash
-./bnm.sh disable <domain>
+./nginx-manager.sh disable <domain>
 ```
 
 Generates SSL for domain(s) (use `example.org www.example.org` to generate SSL for both)
 > Set staging to 1 if you're testing your setup to avoid hitting request limits
 ```bash
-./bnm.sh ssl <mail> <staging> <domains>
+./nginx-manager.sh ssl <mail> <staging> <domains>
 ```
 
 Reload nginx service
 ```bash
-./bnm.sh reload
+./nginx-manager.sh reload
 ```
 
 Purge everything
 ```bash
-./bnm.sh purge
+./nginx-manager.sh purge
 ```
 
 ### configuration
@@ -62,10 +62,10 @@ services:
   example_service:
     ...
     networks:
-    - bnm_network
+    - nginx_manager_network
 
 networks:
-  bnm_network:
+  nginx_manager_network:
     external: true
     driver: bridge
 ```

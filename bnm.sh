@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-NETWORK_NAME="bnm_network"
+NETWORK_NAME="nginx_manager_network"
 if ! docker network inspect "$NETWORK_NAME" &>/dev/null; then
     echo "Network '$NETWORK_NAME' does not exist."
     echo "Create network: docker network create $NETWORK_NAME"
@@ -15,10 +15,10 @@ fi
 if [ $# -lt 1 ]; then
     echo "Error: no command name provided!"
     echo "Example Usage: "
-    echo "./bnm.sh create <domain>"
-    echo "./bnm.sh enable <domain>"
-    echo "./bnm.sh disable <domain>"
-    echo "./bnm.sh ssl <mail> <staging> <domains>"
+    echo "./nginx-manager.sh create <domain>"
+    echo "./nginx-manager.sh enable <domain>"
+    echo "./nginx-manager.sh disable <domain>"
+    echo "./nginx-manager.sh ssl <mail> <staging> <domains>"
     exit 1
 fi
 
@@ -26,8 +26,8 @@ if [ "$1" == "create" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bnm.sh create <domain>"
-    echo "Example: ./bnm.sh create example.org"
+    echo "Syntax:  ./nginx-manager.sh create <domain>"
+    echo "Example: ./nginx-manager.sh create example.org"
     exit 1
 fi
 
@@ -138,8 +138,8 @@ elif [ "$1" == "enable" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bnm.sh enable <domain>"
-    echo "Example: ./bnm.sh enable example.org"
+    echo "Syntax:  ./nginx-manager.sh enable <domain>"
+    echo "Example: ./nginx-manager.sh enable example.org"
     exit 1
 fi
 
@@ -157,8 +157,8 @@ elif [ "$1" == "disable" ]; then
 
 if [ $# -lt 2 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bnm.sh disable <domain>"
-    echo "Example: ./bnm.sh disable example.org"
+    echo "Syntax:  ./nginx-manager.sh disable <domain>"
+    echo "Example: ./nginx-manager.sh disable example.org"
     exit 1
 fi
 
@@ -175,8 +175,8 @@ elif [ "$1" == "ssl" ]; then
 
 if [ $# -lt 3 ]; then
     echo "Error: invalid syntax."
-    echo "Syntax:  ./bnm.sh ssl <mail> <staging> <domains>"
-    echo "Example: ./bnm.sh ssl example@mail.com 0 example.org www.example.org"
+    echo "Syntax:  ./nginx-manager.sh ssl <mail> <staging> <domains>"
+    echo "Example: ./nginx-manager.sh ssl example@mail.com 0 example.org www.example.org"
     exit 1
 fi
 
