@@ -1,6 +1,6 @@
 ## nginx-manager
 
-Simplifies deployment and management across multiple domains.
+a simple, easy-to-use tool for managing nginx hosts.
 
 ### requirements
 
@@ -10,10 +10,6 @@ Simplifies deployment and management across multiple domains.
 ### installation
 
 ```
-sudo apt update
-sudo apt upgrade
-sudo apt install docker docker-compose -y
-
 git clone https://github.com/bbangg/nginx-manager.git
 cd nginx-manager
 
@@ -92,6 +88,20 @@ location / {
 ```
 include /etc/nginx/conf.d/cloudflare.conf;
 ```
+
+### custom scripts
+
+```
+cat > "scripts/custom-script.sh" <<EOF
+# Your description here (will be shown on the console)
+
+echo "Hi"
+EOF
+
+chmod +x ./scripts/custom-script.sh
+```
+
+![screenshot-custom-script](/docs/resources/custom-script.png)
 
 ### todo
 
