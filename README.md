@@ -105,7 +105,4 @@ chmod +x ./scripts/custom-script.sh
 
 ### todo
 
-- [ ] grafana + prometheus for monitoring [check repo](https://github.com/bbangg/grafana)
-- [ ] cron job or command to handle massive log files (compress and upload somewhere or delete directly)
-- [x] logs directory
-- [x] allow traffic from cloudflare only (check `cloudflare.conf`)
+- [ ] cron job or custom script to upload log files somewhere.
