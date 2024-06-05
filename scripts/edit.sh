@@ -1,4 +1,4 @@
-# Edit vhost file
+# Edit vhost file in (data/nginx/conf.d/sites-available)
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
