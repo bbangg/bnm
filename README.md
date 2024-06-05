@@ -5,7 +5,6 @@ a simple, easy-to-use tool for managing nginx hosts.
 ### requirements
 
 - docker
-- docker-compose
 
 ### installation
 

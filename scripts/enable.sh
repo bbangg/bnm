@@ -17,7 +17,7 @@ FILE_NAME="${DOMAIN}.conf"
 FILE_PATH="data/nginx/conf.d/sites-available/${FILE_NAME}"
 LOGS_PATH="data/nginx/logs/${DOMAIN}"
 
-docker-compose exec nginx ln -s "/etc/nginx/conf.d/sites-available/${FILE_NAME}" "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
+docker compose exec nginx ln -s "/etc/nginx/conf.d/sites-available/${FILE_NAME}" "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
 
 if ! [ -d "$LOGS_PATH" ]; then
     echo "${YELLOW}INFO:${RESET} Creating ${LOGS_PATH} for logs."

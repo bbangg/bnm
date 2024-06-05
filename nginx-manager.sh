@@ -6,8 +6,8 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RESET='\033[0m'
 
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo -e "${RED}ERROR${RESET}: docker-compose is not installed." >&2
+if ! [ -x "$(command -v docker compose)" ]; then
+  echo -e "${RED}ERROR${RESET}: docker compose is not installed." >&2
   exit 1
 fi
 

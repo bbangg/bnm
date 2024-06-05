@@ -14,6 +14,6 @@ fi
 DOMAIN="$2"
 FILE_NAME="${DOMAIN}.conf"
 
-docker-compose exec nginx rm "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
+docker compose exec nginx rm "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
 
 echo "${GREEN}SUCCESS:${RESET} ${DOMAIN} has been disabled."
