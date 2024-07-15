@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cli_help_deploy() {
+  echo -e "${BOLD}Usage:${RESET} ${LIGHT_GREEN}create${RESET} <domain>${RESET}
+
+${BOLD}Examples:${RESET} 
+  ${GRAY}Create a new project with the domain 'example.com'${RESET}
+  ${LIGHT_GREEN}create${RESET} example.com"
+  exit 1
+}
+
+[ ! -n "$1" ] && cli_help_deploy
+
+DOMAIN=$1
+CONFIG_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-available/${DOMAIN}.conf"
+LOGS_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/logs/${DOMAIN}"
+DOMAIN_PATH="$NGINX_MANAGER_WORKDIR/data/www/vhosts/${DOMAIN}"
+
+
+[ ! -d "$LOGS_PATH" ] \
+  && cli_info "Creating folder for logs." \
+  && mkdir -p "$LOGS_PATH"
+
+[ ! -d "$DOMAIN_PATH" ] \
+  && cli_info "Creating folder for domain." \
+  && mkdir -p "$DOMAIN_PATH"
+
+if [ -f "$CONFIG_PATH" ]; then
+  cli_error "The domain ${DOMAIN} already exists."
+  exit 1
+fi
+
+cli_info "Creating homepage for domain ${DOMAIN}..."
+cat > "$DOMAIN_PATH/index.html" <<EOF
+Hello World!
+EOF
+
+cli_info "Creating configuration file for domain ${DOMAIN}..."
+
+cat > "$CONFIG_PATH" <<EOF
+server {
+    listen 80;
+    server_name ${DOMAIN};
+    server_tokens off;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://\$host\$request_uri;
+    }
+}
+
+# update
+# server {
+#    listen 443 ssl;
+#    server_name www.${DOMAIN};
+#    ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+#    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+#    include /etc/letsencrypt/options-ssl-nginx.conf;
+#    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+#    return 301 https://${DOMAIN}\$request_uri;
+#}
+
+server {
+    listen 443 ssl;
+    server_name ${DOMAIN};
+    server_tokens off;
+
+    error_log /var/log/nginx/${DOMAIN}/error.log notice;
+    access_log /var/log/nginx/${DOMAIN}/access.log main;
+
+    ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass  http://${DOMAIN};
+        proxy_set_header    Host                \$http_host;
+        proxy_set_header    X-Real-IP           \$remote_addr;
+        proxy_set_header    X-Forwarded-For     \$proxy_add_x_forwarded_for;
+    }
+    # update
+    # root /var/www/vhosts/${DOMAIN};
+    # index index.html index.php;
+}
+EOF
+
+cli_success "Domain ${DOMAIN} created successfully."

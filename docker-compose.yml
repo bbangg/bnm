@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   nginx:
     image: nginx:mainline-alpine
@@ -19,6 +17,7 @@ services:
       
   certbot:
     image: certbot/certbot
+    container_name: nginx-manager-certbot
     restart: unless-stopped
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
@@ -30,3 +29,4 @@ services:
 networks:
   default:
     name: nginx_manager_network
+    driver: bridge

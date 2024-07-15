@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cli_help_deploy() {
+  echo -e "${BOLD}Usage:${RESET} ${LIGHT_GREEN}disable${RESET} <domain>${RESET}
+
+${BOLD}Examples:${RESET} 
+  ${GRAY}Disable the domain 'example.com'${RESET}
+  ${LIGHT_GREEN}disable${RESET} example.com"
+  exit 1
+}
+
+[ ! -n "$1" ] && cli_help_deploy
+
+DOMAIN=$1
+FILE_NAME="${DOMAIN}.conf"
+FILE_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-enabled/${FILE_NAME}"
+
+if [ ! -L "$FILE_PATH" ]; then
+    cli_error "The domain ${DOMAIN} is not enabled."
+    exit 1
+fi
+
+docker compose exec nginx rm "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
+
+cli_success "Domain ${DOMAIN} has been disabled."

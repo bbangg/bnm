@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cli_help_deploy() {
+  echo -e "${BOLD}Usage:${RESET} ${LIGHT_GREEN}edit${RESET} <domain>${RESET}
+
+${BOLD}Examples:${RESET} 
+  ${GRAY}Edit the domain 'example.com'${RESET}
+  ${LIGHT_GREEN}edit${RESET} example.com"
+  exit 1
+}
+
+[ ! -n "$1" ] && cli_help_deploy
+
+DOMAIN=$1
+CONFIG_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-available/${DOMAIN}.conf"
+
+if [ ! -f "$CONFIG_PATH" ]; then
+  cli_error "The domain ${DOMAIN} does not exist."
+  exit 1
+fi
+
+$NGINX_MANAGER_EDITOR "$CONFIG_PATH"
+
+cli_success "Domain ${DOMAIN} has been edited."

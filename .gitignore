@@ -1,5 +1,8 @@
+conf/*
 data/certbot/**
 data/nginx/conf.d/sites-available
 data/nginx/conf.d/sites-enabled
 data/www/vhosts/**
 data/nginx/logs/**
+
+logs/*

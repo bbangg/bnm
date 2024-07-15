@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cli_help_deploy() {
+  echo -e "${BOLD}Usage:${RESET} ${LIGHT_GREEN}enable${RESET} <domain>${RESET}
+
+${BOLD}Examples:${RESET} 
+  ${GRAY}Enable the domain 'example.com'${RESET}
+  ${LIGHT_GREEN}enable${RESET} example.com"
+  exit 1
+}
+
+[ ! -n "$1" ] && cli_help_deploy
+
+DOMAIN=$1
+FILE_NAME="${DOMAIN}.conf"
+FILE_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-available/${FILE_NAME}"
+LOGS_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/logs/${DOMAIN}"
+
+docker compose exec nginx ln -s "/etc/nginx/conf.d/sites-available/${FILE_NAME}" "/etc/nginx/conf.d/sites-enabled/${FILE_NAME}"
+
+if ! [ -d "$LOGS_PATH" ]; then
+    cli_info "Creating folder for logs."
+    mkdir -p "$LOGS_PATH"
+fi
+
+cli_success "Domain ${DOMAIN} has been enabled."

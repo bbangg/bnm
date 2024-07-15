@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+AVAILABLE_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-available"
+ENABLED_PATH="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-enabled"
+
+printf "%-24s┬%-10s\n" "┌────────────────────────" "─────────┐"
+printf "%-27s│%-10s\n" "│ domain" " enabled │"
+printf "%-24s┼%-10s\n" "├────────────────────────" "─────────┤"
+
+for file in $AVAILABLE_PATH/*; do
+  domain=$(basename "$file" .conf)
+  enabled="${RED}✗${RESET}"
+
+  if [ -L "$ENABLED_PATH/${domain}.conf" ]; then
+    enabled="${GREEN}✓${RESET}"
+  fi
+
+  printf "│%-24s│ " " $domain "
+  echo -e "$enabled \t   │"
+done
+
+printf "%-24s┴%-10s\n" "└────────────────────────" "─────────┘"

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+BOLD='\033[1m'
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+GRAY='\033[0;90m'
+LIGHT_RED='\033[0;91m'
+LIGHT_GREEN='\033[0;92m'
+LIGHT_YELLOW='\033[0;93m'
+LIGHT_BLUE='\033[0;94m'
+LIGHT_MAGENTA='\033[0;95m'
+LIGHT_CYAN='\033[0;96m'
+RESET='\033[0m'
+
+cli_log() {
+  script_name=${0##*/}
+  timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  today=$(date +"%Y-%m-%d")
+  echo "[$timestamp] $1" | sed 's/\x1b\[[0-9;]*m//g' >> "$NGINX_MANAGER_WORKDIR/logs/$today.log"
+}
+
+cli_success() {
+  echo -e "${BOLD}${GREEN}SUCCESS:${RESET} $1"
+  cli_log "SUCCESS: $1"
+}
+
+cli_info() {
+  echo -e "${BOLD}${LIGHT_BLUE}INFO:${RESET} $1"
+  cli_log "INFO: $1"
+}
+
+cli_warning() {
+  echo -e "${BOLD}${YELLOW}WARNING:${RESET} $1"
+  cli_log "WARNING: $1"
+}
+
+cli_error() {
+  echo -e "${BOLD}${RED}ERROR:${RESET} $1"
+  cli_log "ERROR: $1"
+}

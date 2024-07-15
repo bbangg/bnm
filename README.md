@@ -1,13 +1,8 @@
 ## nginx-manager
 
-a simple, easy-to-use tool for managing nginx hosts.
-
-### requirements
-
-- docker
+a simple, easy-to-use tool for managing nginx vhosts.
 
 ### installation
-
 ```
 git clone https://github.com/bbangg/nginx-manager.git
 cd nginx-manager
@@ -17,35 +12,30 @@ chmod +x ./nginx-manager.sh && chmod +x ./recreate.sh
 
 ### commands
 
-Create new domain:
+- Create new domain:
 ```bash
 ./nginx-manager.sh create <domain>
 ```
 
-Enable domain (creates symlink to `sites-enabled`)
+- Enable domain (creates symlink to `sites-enabled`)
 ```bash
 ./nginx-manager.sh enable <domain>
 ```
 
-Disable domain (deletes symlink from `sites-enabled`)
+- Disable domain (deletes symlink from `sites-enabled`)
 ```bash
 ./nginx-manager.sh disable <domain>
 ```
 
-Generates SSL for domain(s) (use `example.org www.example.org` to generate SSL for both)
+- Generates SSL for domain(s) (use `example.org www.example.org` to generate SSL for both)
 > Set staging to 1 if you're testing your setup to avoid hitting request limits
 ```bash
 ./nginx-manager.sh ssl <mail> <staging> <domains>
 ```
 
-Reload nginx service
+- Reload nginx service
 ```bash
 ./nginx-manager.sh reload
-```
-
-Purge everything
-```bash
-./nginx-manager.sh purge
 ```
 
 ### configuration
@@ -87,21 +77,3 @@ location / {
 ```
 include /etc/nginx/conf.d/cloudflare.conf;
 ```
-
-### custom scripts
-
-```
-cat > "scripts/custom-script.sh" <<EOF
-# Your description here (will be shown on the console)
-
-echo "Hi"
-EOF
-
-chmod +x ./scripts/custom-script.sh
-```
-
-![screenshot-custom-script](/docs/resources/custom-script.png)
-
-### todo
-
-- [ ] cron job or custom script to upload log files somewhere.

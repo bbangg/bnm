@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cli_info "Reloading Nginx configuration"
+
+docker compose exec nginx nginx -s reload

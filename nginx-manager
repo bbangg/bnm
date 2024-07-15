@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -e
+export NGINX_MANAGER_WORKDIR=$(cd $(dirname $0) && pwd)
+export NGINX_MANAGER_ENABLED_DIR="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-enabled"
+export NGINX_MANAGER_AVAILABLE_DIR="$NGINX_MANAGER_WORKDIR/data/nginx/conf.d/sites-available"
+
+# shellcheck source=common
+. "$NGINX_MANAGER_WORKDIR/common"
+
+cmd_help() {
+    printf "  ${LIGHT_MAGENTA}${BOLD}%-10s${RESET} ${GRAY}%-20s${RESET} %s\n" "$1" "$2" "$3"
+}
+
+display_link() {
+    printf "%-30s ${BLUE}%s${RESET}\n" "$1" "$2"
+}
+
+cli_help() {
+    cli_name=${0##*/}
+    printf "${BLUE}${BOLD}$cli_name${RESET} is a simple, easy-to-use tool for managing nginx vhosts. ${GRAY}($(cat $NGINX_MANAGER_WORKDIR/VERSION))${RESET}
+
+${BOLD}Usage: $cli_name <command> ${LIGHT_CYAN}${BOLD}[...flags]${RESET}${BOLD} [...args]
+
+Commands:
+"
+    cmd_help "create"   "example.com" "Create new virtual host"
+    cmd_help "edit"     "" "Edit virtual host"
+    cmd_help "enable"   "" "Enable virtual host"
+    cmd_help "disable"  "" "Disable virtual host"
+    cmd_help "delete"   "" "Delete virtual host"
+    cmd_help "list"     "" "List all virtual hosts"
+
+    cmd_help "ssl" "" "Create SSL certificate for virtual host"
+    cmd_help "reload" "" "Reload nginx"
+
+    echo ""
+
+    display_link "Github:" "https://github.com/bbangg/nginx-manager"
+    exit 1
+}
+
+[ ! -f "$NGINX_MANAGER_WORKDIR/config" ] \
+  && echo "ERROR: No $NGINX_MANAGER_WORKDIR/config file found. " \
+  && echo "cp $NGINX_MANAGER_WORKDIR/config.template $NGINX_MANAGER_WORKDIR/config and adjust." \
+  && exit 1
+
+[ ! -d "$NGINX_MANAGER_ENABLED_DIR" ] \
+  && cli_info "Creating folder for enabled hosts." \
+  && mkdir -p "$NGINX_MANAGER_ENABLED_DIR"
+
+[ ! -d "$NGINX_MANAGER_AVAILABLE_DIR" ] \
+  && cli_info "Creating folder for available hosts." \
+  && mkdir -p "$NGINX_MANAGER_AVAILABLE_DIR"
+
+export $(cat "$NGINX_MANAGER_WORKDIR/config" | xargs)
+
+if [ -z "$1" ]; then
+    cli_help
+fi
+
+case "$1" in
+  create|c)
+    "$NGINX_MANAGER_WORKDIR/commands/create" "$2"
+    ;;
+  enable|e)
+    "$NGINX_MANAGER_WORKDIR/commands/enable" "$2"
+    ;;
+  disable|d)
+    "$NGINX_MANAGER_WORKDIR/commands/disable" "$2"
+    ;;
+  list|ls)
+    "$NGINX_MANAGER_WORKDIR/commands/list"
+    ;;
+  delete|del)
+    "$NGINX_MANAGER_WORKDIR/commands/delete" "$2"
+    ;;
+  reload|r)
+    "$NGINX_MANAGER_WORKDIR/commands/reload"
+    ;;
+  edit)
+    "$NGINX_MANAGER_WORKDIR/commands/edit" "$2"
+    ;;
+  ssl)
+    "$NGINX_MANAGER_WORKDIR/commands/ssl" "$2" "$3" "$@"
+    ;;
+  help|--help|-h)
+    cli_help
+    ;;
+  *)
+    cli_error "Script not found \"$1\""
+    ;;
+esac
