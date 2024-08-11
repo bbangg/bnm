@@ -24,6 +24,8 @@ cli_log() {
 
   [ ! -d "$NGINX_MANAGER_WORKDIR/logs" ] && mkdir -p "$NGINX_MANAGER_WORKDIR/logs"
 
+  chmod 777 "$NGINX_MANAGER_WORKDIR/logs"
+
   echo "[$timestamp] $1" | sed 's/\x1b\[[0-9;]*m//g' >> "$NGINX_MANAGER_WORKDIR/logs/$today.log"
 }
 
