@@ -18,12 +18,6 @@ STAGING=$2
 DOMAINS=${@:6}
 RSA_KEY_SIZE=4096
 DATA_PATH="$NGINX_MANAGER_WORKDIR/data/certbot"
-SSL_PATH="$NGINX_MANAGER_WORKDIR/conf/live/$DOMAINS"
-
-if [ ! -d "$SSL_PATH" ]; then
-  cli_info "Creating folder for certbot data."
-  mkdir -p "$SSL_PATH"
-fi
 
 if [ -d "$DATA_PATH" ]; then
   cli_info "Existing data found for $DOMAINS."
@@ -48,17 +42,17 @@ if [ ! -d "$TARG_PATH" ]; then
   mkdir -p "$TARG_PATH"
 fi
 
-docker compose run --rm --entrypoint "\
+sudo docker compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$RSA_KEY_SIZE -days 1\
     -keyout '$TARG_PATH/privkey.pem' \
     -out '$TARG_PATH/fullchain.pem' \
     -subj '/CN=localhost'" certbot
 
 cli_info "Starting nginx..."
-docker compose up --force-recreate -d nginx
+sudo docker compose up --force-recreate -d nginx
 
 cli_info "Deleting dummy certificate for $DOMAINS..."
-docker compose run --rm --entrypoint "\
+sudo docker compose run --rm --entrypoint "\
   rm -rf /etc/letsencrypt/live/$DOMAINS && \
   rm -rf /etc/letsencrypt/archive/$DOMAINS && \
   rm -rf /etc/letsencrypt/renewal/$DOMAINS.conf" certbot
@@ -79,7 +73,7 @@ if [ "$STAGING" != "0" ]; then
   STAGING_ARG="--staging"
 fi
 
-docker compose run --rm --entrypoint "\
+sudo docker compose run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $email_arg \
     $STAGING_ARG \
