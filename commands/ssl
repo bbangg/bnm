@@ -42,12 +42,12 @@ if [ ! -e "$DATA_PATH/conf/options-ssl-nginx.conf" ] || [ ! -e "$DATA_PATH/conf/
 fi
 
 cli_info "Creating dummy certificate for $DOMAINS..."
-PATH="/etc/letsencrypt/live/$DOMAINS"
+TARG_PATH="/etc/letsencrypt/live/$DOMAINS"
 
 docker compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$RSA_KEY_SIZE -days 1\
-    -keyout '$PATH/privkey.pem' \
-    -out '$PATH/fullchain.pem' \
+    -keyout '$TARG_PATH/privkey.pem' \
+    -out '$TARG_PATH/fullchain.pem' \
     -subj '/CN=localhost'" certbot
 
 cli_info "Starting nginx..."
