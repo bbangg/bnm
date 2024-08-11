@@ -21,6 +21,9 @@ cli_log() {
   script_name=${0##*/}
   timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   today=$(date +"%Y-%m-%d")
+
+  [ ! -d "$NGINX_MANAGER_WORKDIR/logs" ] && mkdir -p "$NGINX_MANAGER_WORKDIR/logs"
+
   echo "[$timestamp] $1" | sed 's/\x1b\[[0-9;]*m//g' >> "$NGINX_MANAGER_WORKDIR/logs/$today.log"
 }
 
